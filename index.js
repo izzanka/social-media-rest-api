@@ -6,6 +6,7 @@ import morgan from "morgan";
 import compression from "compression";
 import cors from "cors";
 import router from "./routes/index.js";
+import { errorMiddleware, notFoundMiddleware } from "./ middlewares/index.js";
 
 const app = express();
 
@@ -20,14 +21,9 @@ mongoose
     console.log("error connecting to mongodb: ", error);
   });
 
-const errorMiddleware = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json("internal server error");
-};
-
 app.use(express.json());
 app.use(helmet());
-app.use(morgan("common"));
+app.use(morgan("tiny"));
 app.use(compression());
 app.use(cors());
 
@@ -36,4 +32,5 @@ app.listen(8800, () => {
 });
 
 app.use("/api/v1", router());
+app.use(notFoundMiddleware);
 app.use(errorMiddleware);
