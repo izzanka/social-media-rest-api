@@ -22,13 +22,25 @@ export const updateUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select(
-      "+updatedAt +password",
-    );
+    const user = await User.findById(req.params.id);
     return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    if (req.body.userId === req.params.id || req.body.isAdmin) {
+      await User.findByIdAndDelete(req.params.id);
+      return res.status(200).json("account has been deleted");
+    } else {
+      return res.status(403).json("you can delete only your account");
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 };
 

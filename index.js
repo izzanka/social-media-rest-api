@@ -26,8 +26,9 @@ app.use(morgan("common"));
 app.use(compression());
 app.use(cors());
 
-app.use("api/v1/", router());
-
 app.listen(8800, () => {
   console.log("backend server is running");
 });
+
+app.use("/api/v1", router());
+

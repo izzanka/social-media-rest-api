@@ -12,9 +12,10 @@ export const register = async (req, res) => {
     });
     const user = await newUser.save();
     return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 };
 
@@ -28,8 +29,8 @@ export const login = async (req, res) => {
     );
     !validPassword && res.status(400).json("wrong password");
     return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 };
