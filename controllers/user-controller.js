@@ -1,7 +1,7 @@
 import { User } from "../models/user-model.js";
 import { hash } from "../helpers/index.js";
 
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   try {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
       if (req.body.password) {
@@ -15,22 +15,20 @@ export const updateUser = async (req, res) => {
       return res.status(403).json("you can update only your account");
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     return res.status(200).json(user);
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
       await User.findByIdAndDelete(req.params.id);
@@ -39,12 +37,11 @@ export const deleteUser = async (req, res) => {
       return res.status(403).json("you can delete only your account");
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const followUser = async (req, res) => {
+export const followUser = async (req, res, next) => {
   try {
     if (req.body.userId !== req.params.id) {
       const user = await User.findById(req.params.id);
@@ -58,12 +55,11 @@ export const followUser = async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const unfollowUser = async (req, res) => {
+export const unfollowUser = async (req, res, next) => {
   try {
     if (req.body.userId !== req.params.id) {
       const user = await User.findById(req.params.id);
@@ -77,7 +73,6 @@ export const unfollowUser = async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };

@@ -1,18 +1,17 @@
 import { Post } from "../models/post-model.js";
 import { User } from "../models/user-model.js";
 
-export const createPost = async (req, res) => {
+export const createPost = async (req, res, next) => {
   try {
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
     return res.status(200).json(savedPost);
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const updatePost = async (req, res) => {
+export const updatePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId) {
@@ -22,12 +21,11 @@ export const updatePost = async (req, res) => {
       return res.status(403).json("you can update only your post");
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const deletePost = async (req, res) => {
+export const deletePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId) {
@@ -37,22 +35,20 @@ export const deletePost = async (req, res) => {
       return res.status(403).json("you can delete only your post");
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const getPostById = async (req, res) => {
+export const getPostById = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     return res.status(200).json(post);
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const likePost = async (req, res) => {
+export const likePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post.likes.includes(req.body.userId)) {
@@ -63,12 +59,11 @@ export const likePost = async (req, res) => {
       return res.status(200).json("post has been disliked");
     }
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
 
-export const getPostTimeline = async (req, res) => {
+export const getPostTimeline = async (req, res, next) => {
   try {
     const currentUser = await User.findById(req.body.userId);
     const userPosts = await Post.find({ userId: currentUser._id });
@@ -79,7 +74,6 @@ export const getPostTimeline = async (req, res) => {
     );
     return res.status(200).json(userPosts.concat(...friendPosts));
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    next(err);
   }
 };
