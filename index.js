@@ -6,7 +6,7 @@ import morgan from "morgan";
 import compression from "compression";
 import cors from "cors";
 import router from "./routes/index.js";
-import { errorMiddleware, notFoundMiddleware } from "./ middlewares/index.js";
+import { errorMiddleware, notFoundMiddleware } from "./middlewares/index.js";
 
 const app = express();
 
