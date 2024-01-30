@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const PostSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -21,4 +21,5 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Post", PostSchema);
+export const Post = mongoose.model('Post', postSchema)
+
