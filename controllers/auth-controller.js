@@ -1,5 +1,5 @@
 import { User } from "../models/user-model.js";
-import { hash } from "../helpers/index.js";
+import {hash, responseSuccess} from "../helpers/index.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
@@ -10,8 +10,8 @@ export const register = async (req, res, next) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    const user = await newUser.save();
-    return res.status(200).json(user);
+    await newUser.save();
+    return res.status(200).json(responseSuccess("register success", null));
   } catch (err) {
     next(err);
   }
@@ -26,7 +26,7 @@ export const login = async (req, res, next) => {
       user.password,
     );
     if (!validPassword) return res.status(400).json("wrong password");
-    return res.status(200).json(user);
+    return res.status(200).json(responseSuccess("login success", user));
   } catch (err) {
     next(err);
   }

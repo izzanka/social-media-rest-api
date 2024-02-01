@@ -7,3 +7,18 @@ export const hash = async (data, salt = 10) => {
     console.log(err);
   }
 };
+
+export const responseSuccess = (msg, data) => {
+  return {
+    status: "success",
+    message: msg,
+    data: data,
+  };
+};
+
+export const responseError = (msg) => {
+  return {
+    status: "error",
+    message: msg,
+  };
+};

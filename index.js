@@ -8,7 +8,7 @@ import cors from "cors";
 import router from "./routes/index.js";
 import { errorMiddleware, notFoundMiddleware } from "./middlewares/index.js";
 
-const app = express();
+export const app = express();
 
 dotenv.config();
 
