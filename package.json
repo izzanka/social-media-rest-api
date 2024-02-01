@@ -11,6 +11,12 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "controllers/**/*.{js}",
+      "!**/node_modules/**"
+    ],
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
