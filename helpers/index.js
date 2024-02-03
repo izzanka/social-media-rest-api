@@ -8,7 +8,7 @@ export const hash = async (data, salt = 10) => {
   }
 };
 
-export const responseSuccess = (msg, data) => {
+export const responseSuccess = (msg, data = null) => {
   return {
     status: "success",
     message: msg,

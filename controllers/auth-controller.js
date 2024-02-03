@@ -10,8 +10,8 @@ export const register = async (req, res, next) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    await newUser.save();
-    return res.status(200).json(responseSuccess("register success", null));
+    const user = await newUser.save();
+    return res.status(200).json(responseSuccess("register success", user));
   } catch (err) {
     next(err);
   }
