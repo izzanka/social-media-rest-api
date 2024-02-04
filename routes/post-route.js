@@ -6,13 +6,19 @@ import {
   likePost,
   updatePost,
 } from "../controllers/post-controller.js";
-import { createPostRequest } from "../requests/post-request.js";
+import {
+  createPostRequest,
+  deletePostRequest,
+  getPostTimelineRequest,
+  likePostRequest,
+  updatePostRequest,
+} from "../requests/post-request.js";
 
 export default (router) => {
-  router.get("/posts/timelines", getPostTimeline);
+  router.get("/posts/timelines", getPostTimelineRequest, getPostTimeline);
   router.get("/posts/:id", getPostById);
   router.post("/posts", createPostRequest, createPost);
-  router.put("/posts/:id", updatePost);
-  router.put("/posts/:id/likes", likePost);
-  router.delete("/posts/:id", deletePost);
+  router.put("/posts/:id", updatePostRequest, updatePost);
+  router.put("/posts/:id/likes", likePostRequest, likePost);
+  router.delete("/posts/:id", deletePostRequest, deletePost);
 };

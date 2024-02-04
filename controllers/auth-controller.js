@@ -1,5 +1,5 @@
 import { User } from "../models/user-model.js";
-import {hash, responseSuccess} from "../helpers/index.js";
+import {hash, responseError, responseSuccess} from "../helpers/index.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
@@ -20,12 +20,12 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(404).json("user not found");
+    if (!user) return res.status(404).json(responseError("email not found"));
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password,
     );
-    if (!validPassword) return res.status(400).json("wrong password");
+    if (!validPassword) return res.status(400).json(responseError("wrong password"));
     return res.status(200).json(responseSuccess("login success", user));
   } catch (err) {
     next(err);

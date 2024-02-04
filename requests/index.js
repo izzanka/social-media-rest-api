@@ -9,7 +9,7 @@ export const validate = (req, res, next, rules) => {
     _.each(validation.errors.errors, (error, key) => {
       errors[key] = error[0];
     });
-    return res.status(400).json(responseError("validation errors", errors));
+    return res.status(400).json(responseError("validation error", errors));
   }
   next();
 };
