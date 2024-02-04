@@ -16,9 +16,10 @@ export const responseSuccess = (msg, data = null) => {
   };
 };
 
-export const responseError = (msg) => {
+export const responseError = (msg, errors = null) => {
   return {
     status: "error",
     message: msg,
+    errors: errors
   };
 };
