@@ -1,6 +1,5 @@
 import { User } from "../models/user-model.js";
 import { hash, responseError, responseSuccess } from "../helpers/index.js";
-import { response } from "express";
 
 export const updateUser = async (req, res, next) => {
   try {
