@@ -23,6 +23,15 @@ let postId1;
 let postId2;
 let postId3;
 
+describe("testing", () => {
+  it("return 404 if route not found", async () => {
+    const res = await request(app).get("/api/v1/posts/timelines/notfound");
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("not found");
+  })
+})
+
 describe("testing auth", () => {
   it("register user success", async () => {
     const params1 = {
@@ -299,8 +308,8 @@ describe("testing user", () => {
       userId: userId4,
     };
     const res = await request(app)
-        .put(`/api/v1/users/${userId1}/unfollows`)
-        .send(params);
+      .put(`/api/v1/users/${userId1}/unfollows`)
+      .send(params);
     expect(res.statusCode).toBe(404);
     expect(res.body.status).toBe("error");
     expect(res.body.message).toBe("current user not found");
@@ -331,110 +340,187 @@ describe("testing user", () => {
   });
 });
 
-// describe("testing post", () => {
-//   it("create post success", async () => {
-//     const params1 = {
-//       userId: userId2,
-//       desc: "test post1",
-//       img: "test-post1.png",
-//       likes: 0,
-//     };
-//     const params2 = {
-//       userId: userId2,
-//       desc: "test post2",
-//       img: "test-post2.png",
-//       likes: 0,
-//     };
-//     const res1 = await request(app).post("/api/v1/posts").send(params1);
-//     const res2 = await request(app).post("/api/v1/posts").send(params2);
-//     postId1 = res1.body.data._id;
-//     postId2 = res2.body.data._id;
-//     expect(res1.statusCode).toBe(200);
-//   });
-//
-//   it("get post timelines success", async () => {
-//     const params = {
-//       userId: userId2,
-//     };
-//     const res = await request(app).get("/api/v1/posts/timelines").send(params);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("update post success", async () => {
-//     const params = {
-//       userId: userId2,
-//       desc: "updated post",
-//     };
-//     const res = await request(app).put(`/api/v1/posts/${postId1}`).send(params);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("update post failed: invalid user id", async () => {
-//     const params = {
-//       userId: "userId",
-//       desc: "updated post 2",
-//     };
-//     const res = await request(app).put(`/api/v1/posts/${postId1}`).send(params);
-//     expect(res.statusCode).toBe(403);
-//   });
-//
-//   it("get post by id success", async () => {
-//     const res = await request(app).get(`/api/v1/posts/${postId1}`);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("get post by id failed: invalid post id", async () => {
-//     const res = await request(app).get("/api/v1/posts/postId");
-//     expect(res.statusCode).toBe(500);
-//   });
-//
-//   it("like post success", async () => {
-//     const params = {
-//       userId: userId3,
-//     };
-//     const res = await request(app)
-//       .put(`/api/v1/posts/${postId1}/likes`)
-//       .send(params);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("dislike post success", async () => {
-//     const params = {
-//       userId: userId3,
-//     };
-//     const res = await request(app)
-//       .put(`/api/v1/posts/${postId1}/likes`)
-//       .send(params);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("delete post failed: invalid user id", async () => {
-//     const params = {
-//       userId: userId3,
-//     };
-//     const res = await request(app)
-//       .delete(`/api/v1/posts/${postId1}`)
-//       .send(params);
-//     expect(res.statusCode).toBe(403);
-//   });
-//
-//   it("delete post success", async () => {
-//     const params = {
-//       userId: userId2,
-//     };
-//     const res = await request(app)
-//       .delete(`/api/v1/posts/${postId1}`)
-//       .send(params);
-//     expect(res.statusCode).toBe(200);
-//   });
-//
-//   it("delete post failed: post already deleted", async () => {
-//     const params = {
-//       userId: userId2,
-//     };
-//     const res = await request(app)
-//       .delete(`/api/v1/posts/${postId1}`)
-//       .send(params);
-//     expect(res.statusCode).toBe(500);
-//   });
-// });
+describe("testing post", () => {
+  it("create post success", async () => {
+    const params1 = {
+      userId: userId2,
+      desc: "test post1",
+      img: "test-post1.png",
+      likes: 0,
+    };
+    const params2 = {
+      userId: userId2,
+      desc: "test post2",
+      img: "test-post2.png",
+      likes: 0,
+    };
+    const res1 = await request(app).post("/api/v1/posts").send(params1);
+    const res2 = await request(app).post("/api/v1/posts").send(params2);
+    postId1 = res1.body.data._id;
+    postId2 = res2.body.data._id;
+    expect(res1.statusCode).toBe(200);
+    expect(res1.body.status).toBe("success");
+    expect(res1.body.message).toBe("create post success");
+  });
+
+  it("create post failed: validation error", async () => {
+    const params = {
+      userId: "",
+      desc: "",
+    };
+    const res = await request(app).post("/api/v1/posts").send(params);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("validation error");
+  });
+
+  it("update post success", async () => {
+    const params = {
+      userId: userId2,
+      desc: "updated post",
+    };
+    const res = await request(app).put(`/api/v1/posts/${postId1}`).send(params);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("post has been updated");
+  });
+
+  it("update post failed: invalid user id", async () => {
+    const params = {
+      userId: userId4,
+      desc: "updated post 2",
+    };
+    const res = await request(app).put(`/api/v1/posts/${postId1}`).send(params);
+    expect(res.statusCode).toBe(403);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("you can update only your post");
+  });
+
+  it("get post by id success", async () => {
+    const res = await request(app).get(`/api/v1/posts/${postId1}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("get post by id success");
+  });
+
+  it("get post by id failed: post not found", async () => {
+    const res = await request(app).get(`/api/v1/posts/${userId4}`);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("post not found");
+  });
+
+  it("like post success", async () => {
+    const params = {
+      userId: userId3,
+    };
+    const res = await request(app)
+      .put(`/api/v1/posts/${postId1}/likes`)
+      .send(params);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("post has been liked");
+  });
+
+  it("like post failed: post not found", async () => {
+    const params = {
+      userId: userId3,
+    };
+    const res = await request(app)
+      .put(`/api/v1/posts/${userId4}/likes`)
+      .send(params);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("post not found");
+  });
+
+  it("dislike post success", async () => {
+    const params = {
+      userId: userId3,
+    };
+    const res = await request(app)
+      .put(`/api/v1/posts/${postId1}/likes`)
+      .send(params);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("post has been disliked");
+  });
+
+  it("get post timelines success", async () => {
+    const params = {
+      userId: userId2,
+    };
+    const res = await request(app).get("/api/v1/posts/timelines").send(params);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("get post timelines success");
+  });
+
+  it("get post timelines failed: validation error", async () => {
+    const params = {
+      userId: "",
+    };
+    const res = await request(app).get("/api/v1/posts/timelines").send(params);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("validation error");
+  });
+
+  it("get post timelines failed: user id not found", async () => {
+    const params = {
+      userId: postId1,
+    };
+    const res = await request(app).get("/api/v1/posts/timelines").send(params);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("current user not found");
+  });
+
+  it("delete post failed: invalid user id", async () => {
+    const params = {
+      userId: userId3,
+    };
+    const res = await request(app)
+      .delete(`/api/v1/posts/${postId1}`)
+      .send(params);
+    expect(res.statusCode).toBe(403);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("you can delete only your post");
+  });
+
+  it("delete post failed: post not found", async () => {
+    const params = {
+      userId: userId3,
+    };
+    const res = await request(app)
+      .delete(`/api/v1/posts/${userId4}`)
+      .send(params);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("post not found");
+  });
+
+  it("delete post success", async () => {
+    const params = {
+      userId: userId2,
+    };
+    const res = await request(app)
+      .delete(`/api/v1/posts/${postId1}`)
+      .send(params);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.message).toBe("post has been deleted");
+  });
+
+  it("delete post failed: post already deleted", async () => {
+    const params = {
+      userId: userId2,
+    };
+    const res = await request(app)
+      .delete(`/api/v1/posts/${postId1}`)
+      .send(params);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("post not found");
+  });
+});
