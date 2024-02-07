@@ -21,7 +21,6 @@ let userId3;
 let userId4 = "65ad08285547bc84730261db";
 let postId1;
 let postId2;
-let postId3;
 
 describe("testing", () => {
   it("return 404 if route not found", async () => {
