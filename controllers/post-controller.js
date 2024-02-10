@@ -2,6 +2,17 @@ import { Post } from "../models/post-model.js";
 import { User } from "../models/user-model.js";
 import { responseError, responseSuccess } from "../helpers/index.js";
 
+export const getAllPost = async (req, res, next) => {
+  try {
+    const posts = await Post.find();
+    return res
+      .status(200)
+      .json(responseSuccess("get all posts success", posts));
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const createPost = async (req, res, next) => {
   try {
     const newPost = new Post(req.body);

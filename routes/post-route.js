@@ -1,6 +1,7 @@
 import {
   createPost,
   deletePost,
+  getAllPost,
   getPostById,
   getPostTimeline,
   likePost,
@@ -15,6 +16,7 @@ import {
 } from "../requests/post-request.js";
 
 export default (router) => {
+  router.get("/posts", getAllPost);
   router.get("/posts/timelines", getPostTimelineRequest, getPostTimeline);
   router.get("/posts/:id", getPostById);
   router.post("/posts", createPostRequest, createPost);
